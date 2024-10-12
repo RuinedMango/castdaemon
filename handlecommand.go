@@ -9,5 +9,7 @@ func handle (buf []byte){
 	case 'x':
 		os.Remove("/tmp/castdaemon.sock")
 		os.Exit(1)
+	case 's':
+		subscribe(buf[1:])
 	}
 }
