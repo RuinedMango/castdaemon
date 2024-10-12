@@ -42,11 +42,6 @@ func main() {
                 log.Fatal(err)
             }
 			handle(buf[:n])
-            // Echo the data back to the connection.
-            _, err = conn.Write(buf[:n])
-            if err != nil {
-                log.Fatal(err)
-            }
         }(conn)
     }
 }
