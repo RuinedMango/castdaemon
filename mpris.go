@@ -5,37 +5,41 @@ import (
 	"os"
 
 	"github.com/godbus/dbus/v5"
+	"github.com/godbus/dbus/v5/introspect"
 )
+
+const intro = `
+<node>
+	<interface name="org.mpris.MediaPlayer2">
+		<method name="PlayPause">
+		</method>
+			
+	</interface>` + introspect.IntrospectDataString + `</node> `
+
+func PlayPause() () {
+	fmt.Println("Pause/Play Requested")
+}
 
 func mprize() {
 	conn, err := dbus.ConnectSessionBus()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Failed to connect to session bus:", err)
-		os.Exit(1)
+		panic(err)
 	}
 	defer conn.Close()
 
-	if err = conn.AddMatchSignal(
-		dbus.WithMatchObjectPath("/org/gnome/SettingsDaemon"),
-		dbus.WithMatchInterface("org.gnome.SettingsDaemon.MediaKeys"),
-	); err != nil {
+	conn.Export("Boo!", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.castcli")
+	conn.Export(introspect.Introspectable(intro), "/org/mpris/Mediaplayer2",
+		"org.freedesktop.DBus.Introspectable")
+
+	reply, err := conn.RequestName("org.mpris.MediaPlayer2.castcli",
+		dbus.NameFlagDoNotQueue)
+	if err != nil {
 		panic(err)
 	}
-
-	// Grab media player keys.
-	bus := conn.Object("org.gnome.SettingsDaemon", "/org/gnome/SettingsDaemon/MediaKeys")
-	call := bus.Call("org.gnome.SettingsDaemon.MediaKeys.GrabMediaPlayerKeys", 0, "test app", uint(0))
-	if call.Err != nil {
-		panic(err)
+	if reply != dbus.RequestNameReplyPrimaryOwner {
+		fmt.Fprintln(os.Stderr, "name already taken")
+		os.Exit(1)
 	}
-
-	signals := make(chan *dbus.Signal, 10)
-	conn.Signal(signals)
-
-	for {
-		select {
-		case message := <-signals:
-			fmt.Println("Message:", message)
-		}
-	}
+	fmt.Println("Listening on com.github.guelfey.Demo / /com/github/guelfey/Demo ...")
+	select {}
 }
