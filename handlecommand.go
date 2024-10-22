@@ -11,6 +11,8 @@ func handle (buf []byte){
 		os.Exit(1)
 	case 's':
 		subscribe(buf[1:])
+	case 'd':
+		download()
 	case 'm':
 		mprize()
 	}
