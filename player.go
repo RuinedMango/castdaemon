@@ -10,7 +10,7 @@ import (
 	"github.com/gopxl/beep/v2/speaker"
 )
 
-func play() {
+func play(podcastName string, epNum uint64) {
 	f, err := os.Open("../Lame_Drivers_-_01_-_Frozen_Egg.mp3")
 	if err != nil {
 		log.Fatal(err)
@@ -33,4 +33,8 @@ func play() {
 	})))
 
 	<-done
+}
+
+func stop(){
+	speaker.Close()
 }
