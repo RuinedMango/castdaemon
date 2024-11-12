@@ -1,5 +1,9 @@
 package main
 
-func download(podcastName string, epNum uint64){
+func downloadEp(podcastName string, epNum uint64){
+
+}
+
+func deleteEp(podcastName string, epNum uint64){
 
 }

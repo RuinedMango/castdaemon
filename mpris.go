@@ -8,16 +8,81 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 )
 
-const intro = `
-<node>
+const introPlayer = `
+<node> ` + introspect.IntrospectDataString + `
 	<interface name="org.mpris.MediaPlayer2">
+		<method name="Raise">
+		</method>
+		<method name="Quit">
+		</method>
+		<property name="CanQuit">
+		</property>
+		<property name="CanRaise">
+		</property>
+		<property name="HasTrackList">
+		</property>
+		<property name="Identity">
+		</property>
+		<property name="SupportedUriSchemes"
+		</property>
+		<property name="SupportedMimeTypes">
+		</property>
+
+	</interface>
+
+	<interface name="org.mpris.MediaPlayer2.Player">
+		<method name="Next">
+		</method>
+		<method name="Previous">
+		</method>
+		<method name="Pause">
+		</method>
 		<method name="PlayPause">
 		</method>
-			
-	</interface>` + introspect.IntrospectDataString + `</node> `
+		<method name="Stop">
+		</method>
+		<method name="Play">
+		</method>
+		<method name="Seek">
+		</method>
+		<method name="SetPosition">
+		</method>
+		<signal name="Seeked">
+		</signal>
+		<property name="PlaybackStatus">
+		</property>
+		<property name="LoopStatus">
+		</property>
+		<property name="Rate">
+		</property>
+		<property name="Shuffle">
+		</property>
+		<property name="Metadata">
+		</property>
+		<property name="Volume">
+		</property>
+		<property name="Position">
+		</property>
+		<property name="MinimumRate">
+		</property>
+		<property name="MaximumRate">
+		</property>
+		<property name="CanGoNext">
+		</property>
+		<property name="CanGoPrevious">
+		</property>
+		<property name="CanPlay">
+		</property>
+		<property name="CanSeek">
+		</property>
+		<property name="CanControl">
+		</property>
+
+	</interface> </node>`
+
 
 func PlayPause() () {
-	fmt.Println("Pause/Play Requested")
+	pausetoggle()
 }
 
 func mprize() {
@@ -27,9 +92,8 @@ func mprize() {
 	}
 	defer conn.Close()
 
-	conn.Export("Boo!", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.castcli")
-	conn.Export(introspect.Introspectable(intro), "/org/mpris/Mediaplayer2",
-		"org.freedesktop.DBus.Introspectable")
+	conn.Export(introspect.Introspectable(introPlayer), "/org/mpris/MediaPlayer2",
+	"org.freedesktop.DBus.Introspectable")
 
 	reply, err := conn.RequestName("org.mpris.MediaPlayer2.castcli",
 		dbus.NameFlagDoNotQueue)
