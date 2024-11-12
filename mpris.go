@@ -8,14 +8,14 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 )
 
-const introPlayer = `
-<node> ` + introspect.IntrospectDataString + `
+const introspec = `
+<node name="org.mpris.MediaPlayer2.castcli"> ` + introspect.IntrospectDataString + `
 	<interface name="org.mpris.MediaPlayer2">
 		<method name="Raise">
 		</method>
 		<method name="Quit">
 		</method>
-		<property name="CanQuit">
+		<property name="CanQuit" >
 		</property>
 		<property name="CanRaise">
 		</property>
@@ -80,7 +80,6 @@ const introPlayer = `
 
 	</interface> </node>`
 
-
 func PlayPause() () {
 	pausetoggle()
 }
@@ -92,13 +91,13 @@ func mprize() {
 	}
 	defer conn.Close()
 
-	conn.Export(introspect.Introspectable(introPlayer), "/org/mpris/MediaPlayer2",
+	conn.Export(introspect.Introspectable(introspec), "/org/mpris/MediaPlayer2",
 	"org.freedesktop.DBus.Introspectable")
 
 	reply, err := conn.RequestName("org.mpris.MediaPlayer2.castcli",
 		dbus.NameFlagDoNotQueue)
 	if err != nil {
-		panic(err)
+			panic(err)
 	}
 	if reply != dbus.RequestNameReplyPrimaryOwner {
 		fmt.Fprintln(os.Stderr, "name already taken")
