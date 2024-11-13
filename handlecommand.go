@@ -24,14 +24,14 @@ func handle (buf []byte){
 
 	case "download":
 		//Sanitize and parse epNum
-		epNum, err := strconv.ParseUint(strings.ReplaceAll(strings.Split(arguments, ":")[1], "\n", ""), 0, 64);
+		epNum, err := strconv.ParseUint(strings.ReplaceAll(strings.Split(arguments, ":")[1], "\n", ""), 0, 32)
 		if err != nil {
 			log.Fatal(err)
 		}
 		downloadEp(strings.Split(arguments, ":")[0], epNum)
 
 	case "delete":
-		epNum, err := strconv.ParseUint(strings.ReplaceAll(strings.Split(arguments, ":")[1], "\n", ""), 0, 64);
+		epNum, err := strconv.ParseUint(strings.ReplaceAll(strings.Split(arguments, ":")[1], "\n", ""), 0, 32)
 		if err != nil{
 			log.Fatal(err)
 		}
@@ -39,7 +39,7 @@ func handle (buf []byte){
 
 	case "play":
 		//Sanitze and parse epNum
-		epNum, err := strconv.ParseUint(strings.ReplaceAll(strings.Split(arguments, ":")[1], "\n", ""), 0, 64)
+		epNum, err := strconv.ParseUint(strings.ReplaceAll(strings.Split(arguments, ":")[1], "\n", ""), 0, 32)
 		if err != nil{
 			log.Fatal(err)
 		}
