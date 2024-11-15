@@ -1,16 +1,30 @@
 package main
 
+import (
+	"time"
+
+	"github.com/gopxl/beep/v2/speaker"
+)
+
+var paused = false
 func pause(){
-	print("Pause Requested")
+	speaker.Lock()
+	paused = true
 }
 
 func unpause(){
-	print("Unpause Requested")
+	speaker.Unlock()
+	paused = false
 }
 
 func pausetoggle(){
-	print("Pausetoggle Requested")
-
+	if paused{
+		speaker.Unlock()
+		paused = false
+	}else{
+		speaker.Lock()
+		paused = true
+	}
 }
 
 func forwardskip(){
@@ -22,9 +36,11 @@ func backwardskip(){
 }
 
 func forward(){
-	print("Forward Requested")
+	globalstreamer.Seek(globalformat.SampleRate.N(globalformat.SampleRate.D(globalstreamer.Position()).Round(time.Second) + (time.Second * 5)))
+	print("Forward Requested")	
 }
 
 func backward(){
+	globalstreamer.Seek(globalformat.SampleRate.N(globalformat.SampleRate.D(globalstreamer.Position()).Round(time.Second) - (time.Second * 5)))
 	print("Backward Requested")
 }

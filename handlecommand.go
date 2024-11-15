@@ -43,7 +43,7 @@ func handle (buf []byte){
 		if err != nil{
 			log.Fatal(err)
 		}
-		play(strings.Split(arguments, ":")[0], epNum)
+		go play(strings.Split(arguments, ":")[0], epNum)
 
 	case "stop":
 		stop()
