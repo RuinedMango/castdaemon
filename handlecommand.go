@@ -11,6 +11,7 @@ func handle (buf []byte){
 	command := strings.Split(string(buf), ":")[0]
 	arguments := strings.SplitN(string(buf), ":", 2)[1];
 	switch command{
+	//Server commands
 	case "test":
 		print("Testicles:")
 		print(arguments)
@@ -73,6 +74,12 @@ func handle (buf []byte){
 
 	case "bskip":
 		backwardskip()
+	//Client player commands
+case "getsubscribed":
+		returnsubscribed()
 
+	case "getdownloaded":
+		returndownloaded()
+	
 	}
 }
